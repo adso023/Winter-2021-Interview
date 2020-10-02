@@ -1,5 +1,6 @@
 import express from 'express';
-import { Pokemon } from './pokemon/pokemon';
+import { IPokemon, Pokemon } from './pokemon/pokemon';
+import url from 'url';
 
 const app = express();
 app.use(express.json());
@@ -16,16 +17,30 @@ app.get('/pokemon', async (request, response) => {
   // Sends in the requested name
   try {
     const result = await p.getPokemonByName(String(request.query.name));
+    // const names: string[] = request.query.name.toLocaleString().split(",");
+    // names.forEach((name) => console.log(`Name: ${name}`));
+    // const result = await p.getPokemonsByNameList(names);
+    // var error: boolean = false;
+    // const toDisplay: IPokemon[] = [];
+
+    // result.forEach((res) => {
+    //   if (res !== null) {
+    //     toDisplay.push(res);
+    //   } else {
+    //     error = true;
+    //   }
+    // });
+
     // Sends back the id of the pokemon
     response.send({
-      data: result
+      data: result,
     });
   } catch (e) {
     console.log(e);
     response.status(500);
     response.send({
-      error: 'Could not find pokemon'
-    })
+      error: 'Could not find pokemon',
+    });
   }
 });
 
